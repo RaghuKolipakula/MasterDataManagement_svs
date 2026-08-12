@@ -1,4 +1,4 @@
-import "@shopify/shopify-app-remix/adapters/cloudflare";
+
 import {
   ApiVersion,
   AppDistribution,
