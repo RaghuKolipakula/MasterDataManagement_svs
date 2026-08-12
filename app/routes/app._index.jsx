@@ -9,7 +9,7 @@ import {
   InlineGrid,
   CalloutCard
 } from "@shopify/polaris";
-import { useNavigate } from "react-router";
+import { useNavigate } from "@remix-run/react";
 
 export const loader = async ({ request }) => {
   await authenticate.admin(request);

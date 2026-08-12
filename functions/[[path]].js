@@ -1,4 +1,4 @@
-import { createPagesFunctionHandler } from "@react-router/cloudflare";
+import { createPagesFunctionHandler } from "@remix-run/cloudflare-pages";
 
 // eslint-disable-next-line import/no-unresolved
 import * as build from "../build/server";

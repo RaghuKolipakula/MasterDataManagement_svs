@@ -1,9 +1,9 @@
-import "@shopify/shopify-app-react-router/adapters/node";
+import "@shopify/shopify-app-remix/adapters/cloudflare";
 import {
   ApiVersion,
   AppDistribution,
   shopifyApp,
-} from "@shopify/shopify-app-react-router/server";
+} from "@shopify/shopify-app-remix/server";
 import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
 import prisma from "./db.server";
 

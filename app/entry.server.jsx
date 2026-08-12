@@ -1,6 +1,6 @@
-import { renderToReadableStream } from "react-dom/server.browser";
-import { ServerRouter } from "react-router";
+import { RemixServer } from "@remix-run/react";
 import { isbot } from "isbot";
+import { renderToReadableStream } from "react-dom/server.browser";
 import { addDocumentResponseHeaders } from "./shopify.server";
 
 export const streamTimeout = 5000;
@@ -9,13 +9,13 @@ export default async function handleRequest(
   request,
   responseStatusCode,
   responseHeaders,
-  reactRouterContext,
+  remixContext,
 ) {
   addDocumentResponseHeaders(request, responseHeaders);
   const userAgent = request.headers.get("user-agent");
 
   const body = await renderToReadableStream(
-    <ServerRouter context={reactRouterContext} url={request.url} />,
+    <RemixServer context={remixContext} url={request.url} />,
     {
       signal: request.signal,
       onError(error) {

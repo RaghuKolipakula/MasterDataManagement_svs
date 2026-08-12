@@ -2,7 +2,7 @@
   "name": "svs-mdm",
   "private": true,
   "scripts": {
-    "build": "react-router build",
+    "build": "remix vite:build",
     "dev": "shopify app dev",
     "config:link": "shopify app config link",
     "generate": "shopify app generate",
@@ -17,7 +17,7 @@
     "prisma": "prisma",
     "graphql-codegen": "graphql-codegen",
     "vite": "vite",
-    "typecheck": "react-router typegen && tsc --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "type": "module",
   "engines": {
@@ -26,22 +26,22 @@
   "dependencies": {
     "@prisma/adapter-d1": "^7.9.1",
     "@prisma/client": "^6.16.3",
-    "@react-router/cloudflare": "^7.18.2",
-    "@react-router/dev": "^7.12.0",
-    "@react-router/fs-routes": "^7.12.0",
+    "@remix-run/cloudflare": "^2.15.3",
+    "@remix-run/cloudflare-pages": "^2.15.3",
+    "@remix-run/react": "^2.15.3",
     "@shopify/app-bridge-react": "^4.2.4",
     "@shopify/polaris": "^13.9.5",
-    "@shopify/shopify-app-react-router": "^1.2.1",
+    "@shopify/shopify-app-remix": "^3.6.0",
     "@shopify/shopify-app-session-storage-prisma": "^9.0.0",
     "isbot": "^5.1.31",
     "prisma": "^6.16.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router": "^7.12.0",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260812.1",
+    "@remix-run/dev": "^2.15.3",
     "@shopify/api-codegen-preset": "^1.2.0",
     "@shopify/polaris-types": "^1.0.1",
     "@types/eslint": "^9.6.1",
@@ -62,7 +62,6 @@
     "vite": "^6.3.6",
     "wrangler": "^4.122.0"
   },
-
   "trustedDependencies": [
     "@shopify/plugin-cloudflare"
   ],

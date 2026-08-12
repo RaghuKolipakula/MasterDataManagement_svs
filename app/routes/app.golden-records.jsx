@@ -1,5 +1,5 @@
 
-import { useLoaderData } from "react-router";
+import { useLoaderData } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 import { 
   Page, 
