@@ -69,7 +69,8 @@
     "@shopify/plugin-cloudflare"
   ],
   "overrides": {
-    "p-map": "^4.0.0"
+    "p-map": "^4.0.0",
+    "@cloudflare/workers-types": "$@cloudflare/workers-types"
   },
   "author": "svstech"
 }
