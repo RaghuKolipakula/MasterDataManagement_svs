@@ -62,9 +62,7 @@
     "vite": "^6.3.6",
     "wrangler": "^4.122.0"
   },
-  "workspaces": [
-    "extensions/*"
-  ],
+
   "trustedDependencies": [
     "@shopify/plugin-cloudflare"
   ],
