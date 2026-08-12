@@ -1,0 +1,128 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+// Note that some adapters may set a maximum length for the String type by default, please ensure your strings are long
+// enough when changing adapters.
+// See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
+datasource db {
+  provider = "sqlite"
+  url      = "file:dev.sqlite"
+}
+
+model Session {
+  id            String    @id
+  shop          String
+  state         String
+  isOnline      Boolean   @default(false)
+  scope         String?
+  expires       DateTime?
+  accessToken   String
+  userId        BigInt?
+  firstName     String?
+  lastName      String?
+  email         String?
+  accountOwner  Boolean   @default(false)
+  locale        String?
+  collaborator  Boolean?  @default(false)
+  emailVerified Boolean?  @default(false)
+  refreshToken        String?
+  refreshTokenExpires DateTime?
+}
+
+model DataSource {
+  id        String   @id @default(uuid())
+  shop      String
+  name      String
+  type      String   // e.g., 'CSV', 'Shopify', 'CRM'
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  fieldMappings    FieldMapping[]
+  sourceRecords    SourceRecord[]
+  survivorshipRules SurvivorshipRule[]
+}
+
+model StandardField {
+  id          String   @id @default(uuid())
+  shop        String
+  name        String   // e.g., 'email', 'firstName', 'lastName', 'phone'
+  displayName String
+  type        String   // 'string', 'number', 'boolean', 'date'
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  fieldMappings     FieldMapping[]
+  survivorshipRules SurvivorshipRule[]
+  matchingRules     MatchingRule[]
+}
+
+model FieldMapping {
+  id              String   @id @default(uuid())
+  dataSourceId    String
+  standardFieldId String
+  sourceFieldName String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  dataSource    DataSource    @relation(fields: [dataSourceId], references: [id], onDelete: Cascade)
+  standardField StandardField @relation(fields: [standardFieldId], references: [id], onDelete: Cascade)
+
+  @@unique([dataSourceId, standardFieldId])
+}
+
+model SourceRecord {
+  id             String   @id @default(uuid())
+  dataSourceId   String
+  shop           String
+  sourceId       String?  // ID in the source system (e.g., Shopify Customer ID)
+  data           String   // JSON string of the raw data (SQLite workaround for JSON)
+  goldenRecordId String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  dataSource   DataSource    @relation(fields: [dataSourceId], references: [id], onDelete: Cascade)
+  goldenRecord GoldenRecord? @relation(fields: [goldenRecordId], references: [id], onDelete: SetNull)
+}
+
+model GoldenRecord {
+  id        String   @id @default(uuid())
+  shop      String
+  data      String   // JSON string of the consolidated data
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sourceRecords SourceRecord[]
+}
+
+model SurvivorshipRule {
+  id              String   @id @default(uuid())
+  shop            String
+  standardFieldId String
+  dataSourceId    String
+  priority        Int      // Lower number = higher priority
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  standardField StandardField @relation(fields: [standardFieldId], references: [id], onDelete: Cascade)
+  dataSource    DataSource    @relation(fields: [dataSourceId], references: [id], onDelete: Cascade)
+
+  @@unique([standardFieldId, dataSourceId])
+}
+
+model MatchingRule {
+  id              String   @id @default(uuid())
+  shop            String
+  standardFieldId String
+  matchType       String   // 'exact' or 'fuzzy'
+  threshold       Float?   // e.g., 0.85 for fuzzy
+  weight          Float    // Importance of this rule
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  standardField StandardField @relation(fields: [standardFieldId], references: [id], onDelete: Cascade)
+}
