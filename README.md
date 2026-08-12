@@ -235,3 +235,6 @@ Shopify:
 Internationalization:
 
 - [Internationalizing your app](https://shopify.dev/docs/apps/best-practices/internationalization/getting-started)
+
+## Deployment
+This app is configured to deploy to Cloudflare Pages. Output directory is `build/client`.
